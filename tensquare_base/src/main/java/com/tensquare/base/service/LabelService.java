@@ -92,10 +92,10 @@ public class LabelService {
              */
             @Override
             public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                ArrayList<Predicate> list = new ArrayList<>();
+                ArrayList<Predicate> list = new ArrayList();
                 // 判断输入了标签名称
                 if (!StringUtils.isEmpty(label.getLabelname())) {
-                    Predicate p1 = cb.like(root.get("labelname"), label.getLabelname());
+                    Predicate p1 = cb.like(root.get("labelname"), "%"+label.getLabelname()+"%");
                     list.add(p1);
                 }
                 // 判断了标签状态
@@ -108,7 +108,6 @@ public class LabelService {
                     Predicate p3 = cb.like(root.get("recommend"), label.getRecommend());
                     list.add(p3);
                 }
-
                 return cb.and(list.toArray(new Predicate[list.size()]));
             }
         };

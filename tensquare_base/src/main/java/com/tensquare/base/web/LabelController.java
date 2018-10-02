@@ -80,4 +80,12 @@ public class LabelController {
         return new Result(true, StatusCode.OK,"删除成功");
     }
 
+    @RequestMapping(value = "/search",method = RequestMethod.POST)
+    public Result findSearch(@RequestBody Label label) {
+        // 1.查询的数据
+        List<Label> labels = labelService.findSearch(label);
+        System.out.println(labels);
+        return new Result(true,StatusCode.OK,"查询成功",labels);
+    }
+
 }
