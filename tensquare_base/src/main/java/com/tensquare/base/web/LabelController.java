@@ -2,9 +2,11 @@ package com.tensquare.base.web;
 
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
+import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,12 +82,32 @@ public class LabelController {
         return new Result(true, StatusCode.OK,"删除成功");
     }
 
+    /**
+     * 条件查询
+     * @param label
+     * @return
+     */
     @RequestMapping(value = "/search",method = RequestMethod.POST)
     public Result findSearch(@RequestBody Label label) {
         // 1.查询的数据
         List<Label> labels = labelService.findSearch(label);
-        System.out.println(labels);
         return new Result(true,StatusCode.OK,"查询成功",labels);
+    }
+
+    /**
+     * 条件查询带分页
+     * @param label
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping(value = "/search/{page}/{size}",method = RequestMethod.POST)
+    public Result findSearch(@RequestBody Label label,@PathVariable("page") int page,@PathVariable("size") int size) {
+        // 1.查询的数据
+        Page<Label> labelPage = labelService.findSearch(label,page,size);
+        PageResult<Label> pageResult = new PageResult(labelPage.getTotalElements(),labelPage.getContent());
+        return new Result(true,StatusCode.OK,"查询成功",pageResult);
+
     }
 
 }
