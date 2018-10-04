@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,9 @@ public class ArticleService {
 	
 	@Autowired
 	private IdWorker idWorker;
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	/**
 	 * 查询全部列表
@@ -81,7 +86,17 @@ public class ArticleService {
 	 * @return
 	 */
 	public Article findById(String id) {
-		return articleDao.findById(id).get();
+		// 先从缓存中查询
+		Article article = (Article) redisTemplate.opsForValue().get("article_" + id);
+		if (article == null) {
+			article = articleDao.findById(id).get();
+			// 存入redis缓存   存10秒之后自动消失
+			redisTemplate.opsForValue().set("article_"+article.getId(),article,10, TimeUnit.SECONDS);
+			System.out.println("从数据库中查的");
+		} else {
+			System.out.println("从缓存中查询的");
+		}
+		return article;
 	}
 
 	/**
@@ -99,6 +114,7 @@ public class ArticleService {
 	 */
 	public void update(Article article) {
 		articleDao.save(article);
+		redisTemplate.delete("article_"+article.getId());
 	}
 
 	/**
@@ -107,6 +123,7 @@ public class ArticleService {
 	 */
 	public void deleteById(String id) {
 		articleDao.deleteById(id);
+		redisTemplate.delete("article_"+id);
 	}
 
 	/**
