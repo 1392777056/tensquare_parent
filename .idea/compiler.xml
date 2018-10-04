@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="tensquare_base" />
         <module name="tensquare_common" />
+        <module name="tensquare_qa" />
         <module name="tensquare_recruit" />
       </profile>
     </annotationProcessing>
@@ -15,6 +16,7 @@
       <module name="tensquare_base" target="1.8" />
       <module name="tensquare_common" target="1.8" />
       <module name="tensquare_parent" target="1.8" />
+      <module name="tensquare_qa" target="1.8" />
       <module name="tensquare_recruit" target="1.8" />
     </bytecodeTargetLevel>
   </component>
