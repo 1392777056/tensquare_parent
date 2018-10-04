@@ -106,7 +106,7 @@ public class EnterpriseController {
 	}
 
 	/**
-	 *
+	 * 热门查询
 	 * @return
 	 */
 	@RequestMapping(value = "/search/hotlist",method = RequestMethod.GET)
