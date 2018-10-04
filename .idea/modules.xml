@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/tensquare_article/tensquare_article.iml" filepath="$PROJECT_DIR$/tensquare_article/tensquare_article.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_base/tensquare_base.iml" filepath="$PROJECT_DIR$/tensquare_base/tensquare_base.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_common/tensquare_common.iml" filepath="$PROJECT_DIR$/tensquare_common/tensquare_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tensquare_gathering/tensquare_gathering.iml" filepath="$PROJECT_DIR$/tensquare_gathering/tensquare_gathering.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_parent.iml" filepath="$PROJECT_DIR$/tensquare_parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_qa/tensquare_qa.iml" filepath="$PROJECT_DIR$/tensquare_qa/tensquare_qa.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_recruit/tensquare_recruit.iml" filepath="$PROJECT_DIR$/tensquare_recruit/tensquare_recruit.iml" />
