@@ -11,8 +11,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import utils.IdWorker;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +58,20 @@ public class SpitService {
      */
     public void add(Spit spit) {
         spit.set_id(String.valueOf(idWorker.nextId()));
+        // 各种设置
+        spit.setComment(0);
+        spit.setVisits(0);
+        spit.setThumbup(0);
+        spit.setPublishtime(new Date());
+        // 判断吐槽中是否有父id ，有父id 需要父id查询出来吐槽对象，并更新它的回复数
+        if (!StringUtils.isEmpty(spit.getParentid())) {
+            // 根据父id查询吐槽
+            Spit parentSpit = spitDao.findById(spit.getParentid()).get();
+            // 设置parentSpit回复数  自增1
+            parentSpit.setComment(spit.getComment()+1);
+            // 更新parentSpit
+            spitDao.save(parentSpit);
+        }
         spitDao.save(spit);
     }
 
