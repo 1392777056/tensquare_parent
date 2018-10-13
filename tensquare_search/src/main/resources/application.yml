@@ -1,0 +1,9 @@
+server:
+  port: 9007
+spring:
+  application:
+    name: tensquare-search
+  data:
+    elasticsearch:
+      #elasticsearch 给java开的后门，  9200通常是任何编程语言都可以去连接
+      cluster-nodes: 192.168.52.170:9300
