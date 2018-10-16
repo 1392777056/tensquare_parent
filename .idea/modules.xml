@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/tensquare_recruit/tensquare_recruit.iml" filepath="$PROJECT_DIR$/tensquare_recruit/tensquare_recruit.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_search/tensquare_search.iml" filepath="$PROJECT_DIR$/tensquare_search/tensquare_search.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensquare_spit/tensquare_spit.iml" filepath="$PROJECT_DIR$/tensquare_spit/tensquare_spit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tensquare_user/tensquare_user.iml" filepath="$PROJECT_DIR$/tensquare_user/tensquare_user.iml" />
     </modules>
   </component>
 </project>

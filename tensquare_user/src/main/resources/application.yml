@@ -1,0 +1,18 @@
+server: 
+  port: 9008
+spring: 
+  application:  
+    name: tensquare-user #指定服务名
+  datasource:  
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.52.170:3306/tensquare_user?useUnicode=true&characterEncoding=UTF8
+    username: root
+    password: 123456
+  jpa: 
+    database: MySQL
+    show-sql: true
+  redis:
+    host: 192.168.52.170
+    port: 6379
+  rabbitmq:
+    host: 192.168.52.170
