@@ -1,29 +1,23 @@
 package com.tensquare.user.service;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-
+import com.tensquare.user.dao.UserDao;
+import com.tensquare.user.pojo.User;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import org.springframework.util.StringUtils;
 import utils.IdWorker;
 
-import com.tensquare.user.dao.UserDao;
-import com.tensquare.user.pojo.User;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 服务层
@@ -39,6 +33,9 @@ public class UserService {
 	
 	@Autowired
 	private IdWorker idWorker;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	/**
 	 * 查询全部列表
@@ -88,6 +85,10 @@ public class UserService {
 	 */
 	public void add(User user) {
 		user.setId( idWorker.nextId()+"" );
+		// 密码加密
+		String md5Password = encoder.encode(user.getPassword());
+		// 把加密后的给user赋值
+		user.setPassword(md5Password);
 		userDao.save(user);
 	}
 
@@ -203,7 +204,7 @@ public class UserService {
 		// 需要从redis 中获取验证码
 		// 知识点：redisTemplate.opsForValue().get("sms_" + user.getMobile()).toString();
 		// 不要toString() 因为万一取得对象为空就造成麻烦了
-		String sysCode = (String) redisTemplate.opsForValue().get("sms_" + user.getMobile());
+		/*String sysCode = (String) redisTemplate.opsForValue().get("sms_" + user.getMobile());
 		// 判断验证码是否为空，或者过期，以及手机号输入有误
 		if (StringUtils.isEmpty(sysCode)) {
 			throw new RuntimeException("手机号有误或者验证码已经过期！");
@@ -211,7 +212,7 @@ public class UserService {
 		// 比较验证码是否一致
 		if (!sysCode.equals(code)) {
 			throw new RuntimeException("验证码有误，请确认后在注册！");
-		}
+		}*/
 		// 添加注册信息
 		user.setId(String.valueOf(idWorker.nextId()));
 		user.setFollowcount(0); // 关注数
@@ -220,8 +221,33 @@ public class UserService {
 		user.setRegdate(new Date()); // 注册日期
 		user.setUpdatedate(new Date()); // 更新日期
 		user.setLastdate(new Date()); // 最后登录的日期
+
+		// 密码加密
+		String md5Password = encoder.encode(user.getPassword());
+		user.setPassword(md5Password);
 		// 注册 --- 保存
 		userDao.save(user);
+	}
+
+	/**
+	 * 用户登录
+	 * @param mobile
+	 * @param password
+	 * @return
+	 */
+	public User userLogin(String mobile,String password) {
+		// 根据手机号去查询用户
+		User user = userDao.findByMobile(mobile);
+		// 判断是否由此用户
+		if (user == null) {
+			throw new RuntimeException("用户不存在");
+		}
+		// 校验密码
+		boolean check = encoder.matches(password,user.getPassword());
+		if (!check) {
+			throw new RuntimeException("登录密码错误");
+		}
+		return user;
 	}
 
 }
