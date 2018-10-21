@@ -7,7 +7,9 @@ import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import utils.JwtUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 /**
  * 控制器层
@@ -120,13 +122,23 @@ public class UserController {
 		return new Result(true,StatusCode.OK,"注册成功");
 	}
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	/**
 	 * 用户登录
 	 * @param user
 	 */
 	@RequestMapping(value = "/login",method=RequestMethod.POST)
 	public Result userLogin(@RequestBody User user){
-		userService.userLogin(user.getMobile(),user.getPassword());
-		return new Result(true,StatusCode.OK,"登录成功");
+		User sysUser = userService.userLogin(user.getMobile(), user.getPassword());
+		// 签发token
+		String token = jwtUtil.createJWT(sysUser.getId(), sysUser.getNickname(), "user");
+		// 创建用户信息和token的对应关系
+		Map<String,String> map = new HashMap<>();
+		map.put("name",sysUser.getNickname());
+		map.put("token",token);
+		map.put("avatar",sysUser.getAvatar());
+		return new Result(true,StatusCode.OK,"登录成功",map);
 	}
 }

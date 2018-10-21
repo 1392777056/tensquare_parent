@@ -16,3 +16,8 @@ spring:
     port: 6379
   rabbitmq:
     host: 192.168.52.170
+jwt:
+  config:
+    # key代表盐  ttl过期时间
+    key: wang
+    ttl: 600000
