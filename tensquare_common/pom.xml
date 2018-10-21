@@ -11,5 +11,12 @@
 
     <artifactId>tensquare_common</artifactId>
 
-
+    <dependencies>
+        <!-- JWT核心包   认证和鉴权 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+    </dependencies>
 </project>
