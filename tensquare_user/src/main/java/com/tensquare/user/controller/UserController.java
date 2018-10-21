@@ -1,14 +1,17 @@
 package com.tensquare.user.controller;
+
 import com.tensquare.user.pojo.User;
 import com.tensquare.user.service.UserService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import utils.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -88,16 +91,57 @@ public class UserController {
 		userService.update(user);		
 		return new Result(true,StatusCode.OK,"修改成功");
 	}
+
+	/**
+	 * 删除
+	 * @param id
+	 *
+	 * 思路：
+	 * 		把验证信息头的相关的操作都挪到拦截器中取，此处只需要判断是管理员权限还是普通用户权限
+	 * */
+	 @RequestMapping(value="/{id}",method= RequestMethod.DELETE)
+	 public Result delete(@PathVariable String id, HttpServletRequest request){
+		 // 获取请求域中的权限：要求管理员权限才能删除，所有获取只需要管理员权限还是普通用户权限
+		 Claims claims = (Claims) request.getAttribute("admin_claims");
+		 if (claims == null) {
+		 	//没有管理员权限
+			 return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		 }
+		 userService.deleteById(id);
+		 return new Result(true,StatusCode.OK,"删除成功");
+	 }
+
 	
 	/**
 	 * 删除
 	 * @param id
-	 */
+	 *
+	 * 取出token解析成的Claims,把Claims中roles的值取出来，是admin就删除，否则没有权限
+
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
-	public Result delete(@PathVariable String id ){
+	public Result delete(@PathVariable String id,@RequestHeader(value = "Authorization",required = false) String authHeader){
+		//1.判断是否带了消息头
+		if (StringUtils.isEmpty(authHeader)) {
+			return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		}
+		//2.判断消息头的格式是否匹配
+		String token = authHeader.split(" ")[1]; // {Bearer token}
+		if (StringUtils.isEmpty(token)) {
+			return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		}
+		//3.判断token是否是合法的
+		Claims claims = jwtUtil.parseJWT(token);
+		if (claims == null) {
+			return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		}
+		//4.判断claims中的roles是不是admin
+		if (!"admin".equals(claims.get("roles"))){
+			return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		}
 		userService.deleteById(id);
 		return new Result(true,StatusCode.OK,"删除成功");
 	}
+	 */
 
 	/**
 	 * 发送短信验证码，不是真的发送，而是把手机号写入消息队列中
