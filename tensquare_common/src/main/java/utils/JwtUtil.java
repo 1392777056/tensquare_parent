@@ -14,7 +14,7 @@ import java.util.Date;
 @ConfigurationProperties("jwt.config")
 public class JwtUtil {
 
-    private String key ;
+    private String key ; // 代表 加盐
 
     private long ttl ;//一个小时
 
