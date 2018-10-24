@@ -10,6 +10,7 @@
         <module name="tensquare_article" />
         <module name="tensquare_base" />
         <module name="tensquare_common" />
+        <module name="tensquare_eureka" />
         <module name="tensquare_gathering" />
         <module name="tensquare_qa" />
         <module name="tensquare_recruit" />
@@ -24,6 +25,7 @@
       <module name="tensquare_article" target="1.8" />
       <module name="tensquare_base" target="1.8" />
       <module name="tensquare_common" target="1.8" />
+      <module name="tensquare_eureka" target="1.8" />
       <module name="tensquare_gathering" target="1.8" />
       <module name="tensquare_parent" target="1.8" />
       <module name="tensquare_qa" target="1.8" />
