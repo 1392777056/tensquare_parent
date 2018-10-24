@@ -1,5 +1,5 @@
 server: 
-  port: 9004
+  port: 9044
 spring: 
   application:  
     name: tensquare-article #指定服务名
@@ -14,3 +14,10 @@ spring:
   redis:
     host: 192.168.52.170
     port: 6379
+
+eureka:
+    client:
+      service‐url:
+        defaultZone: http://localhost:6868/eureka
+    instance:
+      prefer‐ip‐address: true
