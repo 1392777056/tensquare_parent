@@ -2,6 +2,7 @@ package com.tensquare.search;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import utils.IdWorker;
 
@@ -12,6 +13,7 @@ import utils.IdWorker;
  * @Date 2018/10/13 13:15
  */
 @SpringBootApplication
+@EnableEurekaClient
 public class SearchApplication {
 
     /**
