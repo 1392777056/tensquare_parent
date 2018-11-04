@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.IdWorker;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -248,6 +249,26 @@ public class UserService {
 			throw new RuntimeException("登录密码错误");
 		}
 		return user;
+	}
+
+	/**
+	 * 更新粉丝数
+	 * @param userId
+	 * @param fans
+	 */
+	@Transactional
+	public void incFanscount(String userId,int fans) {
+		userDao.incFanscount(userId,fans);
+	}
+
+	/**
+	 * 更新关注数量
+	 * @param userId
+	 * @param follow
+	 */
+	@Transactional
+	public void incFollowconut(String userId,int follow) {
+		userDao.incFollowconut(userId,follow);
 	}
 
 }

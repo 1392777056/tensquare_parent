@@ -185,4 +185,25 @@ public class UserController {
 		map.put("avatar",sysUser.getAvatar());
 		return new Result(true,StatusCode.OK,"登录成功",map);
 	}
+
+	/**
+	 * 更新粉丝数
+	 * @param useId
+	 * @param fans
+	 */
+	@RequestMapping(value = "/incfans/{userid}/{fans}",method = RequestMethod.POST)
+	public void incFanscount(@PathVariable("userid") String useId,@PathVariable("fans") int fans) {
+		userService.incFanscount(useId,fans);
+	}
+
+	/**
+	 * 更新关注数
+	 * @param useId
+	 * @param follow
+	 */
+	@RequestMapping(value = "/incfollow/{userid}/{follow}",method = RequestMethod.POST)
+	public void incFollowconut(@PathVariable("userid") String useId,@PathVariable("follow") int follow) {
+		userService.incFollowconut(useId,follow);
+	}
+
 }

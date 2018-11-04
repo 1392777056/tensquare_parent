@@ -1,5 +1,6 @@
 package com.tensquare.friend.service;
 
+import com.tensquare.friend.client.UserClient;
 import com.tensquare.friend.dao.FriendDao;
 import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.pojo.Friend;
@@ -21,6 +22,9 @@ public class FriendService {
     @Autowired
     private NoFriendDao noFriendDao;
 
+    @Autowired
+    private UserClient userClient;
+
     /**
      * 删除好友
      * @param userid
@@ -30,6 +34,10 @@ public class FriendService {
     public void deleteFriend(String userid,String friendid) {
         friendDao.deleteFriend(userid,friendid);
         friendDao.updateIsLike(friendid,userid,"0");
+        //用户id 减关注数
+        userClient.incFanscount(userid,-1);
+        //朋友id 减粉丝数
+        userClient.incFollowconut(userid,-1);
     }
 
     /**
@@ -59,6 +67,10 @@ public class FriendService {
             friendDao.updateIsLike(userId,friendId,"1");
             friendDao.updateIsLike(friendId,userId,"1");
         }
+        //用户id是涨关注数
+        userClient.incFanscount(userId,1);
+        //朋友id是涨粉丝数
+        userClient.incFollowconut(userId,1);
         return 1;
     }
 
