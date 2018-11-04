@@ -44,7 +44,28 @@ public class FriendController {
             }
         } else {
             // 拉黑
+            int res = friendService.addNoFriend(clamis.getId(),friendId);
+            if (res == 0){
+                return new Result(false,StatusCode.REPERROR,"请不要重复操作");
+            }
         }
+        return new Result(true,StatusCode.OK,"操作成功");
+    }
+
+    /**
+     * 删除好友
+     * @param friendId
+     * @return
+     *
+     */
+    @RequestMapping(value = "/{friendid}",method = RequestMethod.DELETE)
+    public Result deleteFriend(@PathVariable("friendid") String friendId, HttpServletRequest request) {
+        // 1.获取请求域中的登录信息
+        Claims clamis = (Claims) request.getAttribute("user_claims");
+        if (clamis == null) {
+            return new Result(false, StatusCode.ACCESSERROR, "没有权限");
+        }
+        friendService.deleteFriend(clamis.getId(), friendId);
         return new Result(true,StatusCode.OK,"操作成功");
     }
 

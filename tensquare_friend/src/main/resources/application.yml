@@ -11,6 +11,7 @@ spring:
   jpa:
     database: MySQL
     show‐sql: true
+    generate-ddl: true  #自动生成表结构
 jwt:
   config:
     key: itcast

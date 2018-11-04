@@ -1,7 +1,9 @@
 package com.tensquare.friend.service;
 
 import com.tensquare.friend.dao.FriendDao;
+import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.pojo.Friend;
+import com.tensquare.friend.pojo.NoFriend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,20 @@ public class FriendService {
 
     @Autowired
     private FriendDao friendDao;
+
+    @Autowired
+    private NoFriendDao noFriendDao;
+
+    /**
+     * 删除好友
+     * @param userid
+     * @param friendid
+     */
+    @Transactional
+    public void deleteFriend(String userid,String friendid) {
+        friendDao.deleteFriend(userid,friendid);
+        friendDao.updateIsLike(friendid,userid,"0");
+    }
 
     /**
      * 添加好友
@@ -69,5 +85,22 @@ public class FriendService {
 
     }*/
 
-
+    /**
+     * 拉黑
+     * @param userId
+     * @param friendId
+     * @return
+     */
+    @Transactional
+    public int addNoFriend(String userId,String friendId) {
+        int noFriendCount = noFriendDao.selectNoFriendCount(userId,friendId);
+        if (noFriendCount > 0) {
+            return 0;
+        }
+        NoFriend noFriend = new NoFriend();
+        noFriend.setUserId(userId);
+        noFriend.setFriendId(friendId);
+        noFriendDao.save(noFriend);
+        return 1;
+    }
 }
