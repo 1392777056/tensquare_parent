@@ -20,6 +20,7 @@
         <module name="tensquare_sms" />
         <module name="tensquare_spit" />
         <module name="tensquare_user" />
+        <module name="tensuqare_web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -38,6 +39,7 @@
       <module name="tensquare_sms" target="1.8" />
       <module name="tensquare_spit" target="1.8" />
       <module name="tensquare_user" target="1.8" />
+      <module name="tensuqare_web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

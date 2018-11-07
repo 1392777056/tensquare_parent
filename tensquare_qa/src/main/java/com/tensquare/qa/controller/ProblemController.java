@@ -5,6 +5,8 @@ import com.tensquare.qa.service.ProblemService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.jsonwebtoken.Claims;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -93,7 +95,14 @@ public class ProblemController {
 	 * @param id
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
-	public Result delete(@PathVariable String id ){
+	public Result delete(@PathVariable String id, HttpServletRequest request){
+		// 要求有权限才能删除，得需要从请求域中获取Clamis
+		Claims claims = (Claims) request.getAttribute("user_claims");
+		if (claims ==null){
+			return new Result(false,StatusCode.ACCESSERROR,"没有权限");
+		}
+		// 有权限就删除
+
 		problemService.deleteById(id);
 		return new Result(true,StatusCode.OK,"删除成功");
 	}
