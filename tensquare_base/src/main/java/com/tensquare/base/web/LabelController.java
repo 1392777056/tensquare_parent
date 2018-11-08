@@ -19,6 +19,8 @@ import java.util.List;
  *
  * 标签控制器
  */
+//@RefreshScope  ----  自定义的配置消息总线不及时更新，需要加上这个注解，并且需要在postman执行
+//http://自己的主机地址/actuator/bus-refresh
 @RestController
 @RequestMapping("/label")
 @CrossOrigin  // 当前的控制器支持跨域访问
