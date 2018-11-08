@@ -1,5 +1,5 @@
 server: 
-  port: 9044
+  port: 9004
 spring: 
   application:  
     name: tensquare-article #指定服务名
