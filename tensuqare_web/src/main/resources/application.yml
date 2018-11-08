@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: tensuqare-web #前台的微服务网关
+  rabbitmq:
+    host: 192.168.52.170
 eureka:
   client:
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址

@@ -12,6 +12,8 @@ spring:
     database: MySQL
     show‐sql: true
     generate-ddl: true  #自动生成表结构
+  rabbitmq:
+    host: 192.168.52.170
 jwt:
   config:
     key: itcast
