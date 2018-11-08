@@ -8,3 +8,10 @@ spring:
       server:
         git:
           uri: https://gitee.com/dezhe/ten-config.git
+  rabbitmq:
+    host: 192.168.52.170
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
