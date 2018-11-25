@@ -9,7 +9,7 @@ spring:
         git:
           uri: https://gitee.com/dezhe/ten-config.git
   rabbitmq:
-    host: 192.168.52.170
+    host: 192.168.52.172
 management:
   endpoints:
     web:
